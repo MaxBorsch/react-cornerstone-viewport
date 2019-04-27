@@ -81,7 +81,8 @@ class CornerstoneViewport extends Component {
       { name: 'StackScrollMouseWheel' },
       { name: 'StackScrollMultiTouch' }
     ],
-    viewportOverlayComponent: ViewportOverlay
+    viewportOverlayComponent: ViewportOverlay,
+    canvasComponent: 'canvas'
   };
 
   static propTypes = {
@@ -105,6 +106,10 @@ class CornerstoneViewport extends Component {
     setViewportSpecificData: PropTypes.func,
     clearViewportSpecificData: PropTypes.func,
     viewportOverlayComponent: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.func
+    ]),
+    canvasComponent: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.func
     ])
@@ -172,6 +177,8 @@ class CornerstoneViewport extends Component {
       );
     };
 
+    const Canvas = this.props.canvasComponent;
+
     return (
       <div className={className}>
         {ReactResizeDetector && (
@@ -192,7 +199,7 @@ class CornerstoneViewport extends Component {
           {displayLoadingIndicator && (
             <LoadingIndicator error={this.state.error} />
           )}
-          <canvas className="cornerstone-canvas" />
+          <Canvas className="cornerstone-canvas" />
           {getOverlay()}
           <ViewportOrientationMarkers
             imageId={this.state.imageId}
