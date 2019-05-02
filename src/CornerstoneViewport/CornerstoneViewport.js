@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import debounce from 'lodash.debounce';
-import ReactResizeDetector from 'react-resize-detector';
-import ImageScrollbar from '../ImageScrollbar/ImageScrollbar.js';
-import ViewportOverlay from '../ViewportOverlay/ViewportOverlay.js';
-import LoadingIndicator from '../LoadingIndicator/LoadingIndicator.js';
-import ViewportOrientationMarkers from '../ViewportOrientationMarkers/ViewportOrientationMarkers.js';
 import cornerstone from 'cornerstone-core';
 import cornerstoneTools from 'cornerstone-tools';
+import RN from 'react-native';
 
 import './CornerstoneViewport.css';
 
@@ -81,7 +77,6 @@ class CornerstoneViewport extends Component {
       { name: 'StackScrollMouseWheel' },
       { name: 'StackScrollMultiTouch' }
     ],
-    viewportOverlayComponent: ViewportOverlay,
     canvasComponent: 'canvas'
   };
 
@@ -105,14 +100,7 @@ class CornerstoneViewport extends Component {
     setViewportActive: PropTypes.func,
     setViewportSpecificData: PropTypes.func,
     clearViewportSpecificData: PropTypes.func,
-    viewportOverlayComponent: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.func
-    ]),
-    canvasComponent: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.func
-    ])
+    canvasComponent: PropTypes.oneOfType([PropTypes.string, PropTypes.func])
   };
 
   static loadIndicatorDelay = 45;
@@ -165,30 +153,11 @@ class CornerstoneViewport extends Component {
       className += ' active';
     }
 
-    const getOverlay = () => {
-      const Component = this.props.viewportOverlayComponent;
-
-      return (
-        <Component
-          stack={this.state.stack}
-          viewport={this.state.viewport}
-          imageId={this.state.imageId}
-        />
-      );
-    };
-
     const Canvas = this.props.canvasComponent;
 
     return (
-      <div className={className}>
-        {ReactResizeDetector && (
-          <ReactResizeDetector
-            handleWidth
-            handleHeight
-            onResize={this.onWindowResize}
-          />
-        )}
-        <div
+      <RN.View className={className}>
+        <RN.View
           className="viewport-element"
           onContextMenu={this.onContextMenu}
           data-viewport-index={this.props.viewportIndex}
@@ -196,24 +165,10 @@ class CornerstoneViewport extends Component {
             this.element = input;
           }}
         >
-          {displayLoadingIndicator && (
-            <LoadingIndicator error={this.state.error} />
-          )}
           <Canvas className="cornerstone-canvas" />
-          {getOverlay()}
-          <ViewportOrientationMarkers
-            imageId={this.state.imageId}
-            viewport={this.state.viewport}
-          />
-        </div>
-        <ImageScrollbar
-          onInputCallback={this.imageSliderOnInputCallback}
-          max={this.state.stack.imageIds.length - 1}
-          value={this.state.stack.currentImageIdIndex}
-          height={this.state.viewportHeight}
-        />
+        </RN.View>
         {this.props.children}
-      </div>
+      </RN.View>
     );
   }
 
