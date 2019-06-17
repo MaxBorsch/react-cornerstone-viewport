@@ -109,10 +109,7 @@ class CornerstoneViewport extends Component {
       PropTypes.string,
       PropTypes.func
     ]),
-    canvasComponent: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.func
-    ])
+    canvasComponent: PropTypes.oneOfType([PropTypes.string, PropTypes.func])
   };
 
   static loadIndicatorDelay = 45;
@@ -279,11 +276,6 @@ class CornerstoneViewport extends Component {
         eventTarget: element,
         eventType: cornerstoneTools.EVENTS.MEASUREMENT_REMOVED,
         handler: this.onMeasurementRemoved
-      },
-      {
-        eventTarget: element,
-        eventType: cornerstoneTools.EVENTS.MEASUREMENT_MODIFIED,
-        handler: this.onMeasurementModified
       },
       {
         eventTarget: element,
@@ -761,18 +753,21 @@ class CornerstoneViewport extends Component {
   };
 
   onMeasurementAdded = event => {
+    console.log('deep1');
     if (this.props.onMeasurementsChanged) {
       this.props.onMeasurementsChanged(event, 'added');
     }
   };
 
   onMeasurementRemoved = event => {
+    console.log('deep12');
     if (this.props.onMeasurementsChanged) {
       this.props.onMeasurementsChanged(event, 'removed');
     }
   };
 
   onMeasurementModified = event => {
+    console.log('deep13');
     if (this.props.onMeasurementsChanged) {
       this.props.onMeasurementsChanged(event, 'modified');
     }
