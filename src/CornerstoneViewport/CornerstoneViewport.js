@@ -274,6 +274,11 @@ class CornerstoneViewport extends Component {
       },
       {
         eventTarget: element,
+        eventType: cornerstoneTools.EVENTS.MEASUREMENT_COMPLETED,
+        handler: this.onMeasurementModified
+      },
+      {
+        eventTarget: element,
         eventType: cornerstoneTools.EVENTS.MEASUREMENT_REMOVED,
         handler: this.onMeasurementRemoved
       },
